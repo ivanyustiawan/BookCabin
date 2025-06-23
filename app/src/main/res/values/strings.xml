@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">BookCabin</string>
+
+    <string name="title_online_check_in">ONLINE CHECK-IN</string>
+    <string name="label_pnr">PNR</string>
+    <string name="label_last_name">Last Name</string>
+    <string name="button_continue">Continue</string>
+
+    <string name="title_passenger_details">Passenger Details</string>
+    <string name="label_passport_information">Passport Information is required</string>
+    <string name="label_enter_document">Please enter ite required document details below</string>
+    <string name="label_passport_number">Passport Number</string>
+    <string name="button_save">Save</string>
+
+    <string name="title_check_in">CHECK-IN</string>
+    <string name="button_check_in">Check in</string>
+
+    <string name="title_boarding_pass">Boarding Pass</string>
+    <string name="label_seat">Seat</string>
+
+</resources>
