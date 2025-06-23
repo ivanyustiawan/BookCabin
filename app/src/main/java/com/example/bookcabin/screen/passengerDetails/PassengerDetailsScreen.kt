@@ -49,7 +49,7 @@ fun PassengerDetailsScreen(
     pnr: String,
     lastName: String,
     viewModel: PassengerDetailsViewModel = hiltViewModel(),
-    onSaveClick: (String) -> Unit
+    onSaveClick: (String, String, String) -> Unit
 ) {
     val view = LocalView.current
     val window = (view.context as? Activity)?.window
@@ -105,9 +105,24 @@ fun PassengerDetailsScreen(
         }
 
         is AppUiState.Success -> {
-            val passengerId = (passengerUpdateState as AppUiState.Success<String>).data
+            val passengerDetails = (passengerUpdateState as AppUiState.Success<PassengerDetails>).data
+
+            val airlane =
+                passengerDetails.reservation.passengers.passenger[0].passengerSegments.passengerSegment[0].passengerFlight[0].boardingPass.flightDetail.airline
+            val flightNumber =
+                passengerDetails.reservation.passengers.passenger[0].passengerSegments.passengerSegment[0].passengerFlight[0].boardingPass.flightDetail.flightNumber
+            val departureAirport =
+                passengerDetails.reservation.passengers.passenger[0].passengerSegments.passengerSegment[0].passengerFlight[0].boardingPass.displayData.departureAirportName
+            val arrivalAirport =
+                passengerDetails.reservation.passengers.passenger[0].passengerSegments.passengerSegment[0].passengerFlight[0].boardingPass.displayData.arrivalAirportName
+
+
+            val name = "${passengerDetails.reservation.passengers.passenger[0].personName.first} ${passengerDetails.reservation.passengers.passenger[0].personName.last}"
+            val info = "$airlane $flightNumber  $departureAirport to $arrivalAirport"
+            val passengerId = passengerDetails.reservation.passengers.passenger[0].id
+
             if (passengerId.isNotEmpty()) {
-                onSaveClick.invoke(passengerId)
+                onSaveClick.invoke(name, info, passengerId)
             } else {
                 Toast.makeText(
                     context,
@@ -270,6 +285,6 @@ fun PassengerDetailsView(
 @Composable
 fun PassengerDetailsScreenPreview() {
     BookCabinTheme {
-        PassengerDetailsScreen("", "") {}
+        PassengerDetailsScreen("", "", onSaveClick = {} as (String, String, String) -> Unit)
     }
 }

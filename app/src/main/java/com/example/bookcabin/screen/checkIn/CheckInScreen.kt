@@ -34,6 +34,8 @@ import uiState.AppUiState
 
 @Composable
 fun CheckInScreen(
+    name: String,
+    info: String,
     passengerIds: String,
     viewModel: CheckInViewModel = hiltViewModel(),
     onCheckSuccess: (String) -> Unit
@@ -50,7 +52,7 @@ fun CheckInScreen(
         }
     }
 
-    CheckInView(viewModel, passengerIds)
+    CheckInView(viewModel, passengerIds, name, info)
 
     when (checkInState) {
         is AppUiState.Idle -> {}
@@ -85,7 +87,7 @@ fun CheckInScreen(
 }
 
 @Composable
-fun CheckInView(viewModel: CheckInViewModel, passengerIds: String) {
+fun CheckInView(viewModel: CheckInViewModel, passengerIds: String, name: String, info: String) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.secondary,
@@ -125,12 +127,12 @@ fun CheckInView(viewModel: CheckInViewModel, passengerIds: String) {
             Spacer(Modifier.height(24.dp))
 
             Text(
-                text = "John Smith",
+                text = name,
                 style = MaterialTheme.typography.labelLarge,
             )
 
             Text(
-                text = "SQ 627 Singapore to Tokyo",
+                text = info,
                 style = MaterialTheme.typography.bodyLarge,
             )
         }
@@ -141,6 +143,6 @@ fun CheckInView(viewModel: CheckInViewModel, passengerIds: String) {
 @Composable
 fun CheckInScreenPreview() {
     BookCabinTheme {
-        CheckInScreen("") {}
+        CheckInScreen("", "", "") {}
     }
 }

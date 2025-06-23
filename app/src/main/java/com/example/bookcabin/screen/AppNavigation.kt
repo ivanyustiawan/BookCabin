@@ -29,17 +29,22 @@ fun AppNavigation() {
         ) { backStackEntry ->
             val pnr = backStackEntry.arguments?.getString("pnr").orEmpty()
             val lastName = backStackEntry.arguments?.getString("lastName").orEmpty()
-            PassengerDetailsScreen(pnr = pnr, lastName = lastName) { passengerId ->
-                navController.navigate("${Screen.CHECK_IN.label}/$passengerId")
+            PassengerDetailsScreen(pnr = pnr, lastName = lastName) { name, info, passengerId ->
+                navController.navigate("${Screen.CHECK_IN.label}/$name/$info/$passengerId")
             }
         }
 
         composable(
-            "${Screen.CHECK_IN.label}/{passengerId}",
-            arguments = listOf(navArgument("passengerId") { type = NavType.StringType })
+            "${Screen.CHECK_IN.label}/{name}/{info}/{passengerId}",
+            arguments = listOf(
+                navArgument("name") { type = NavType.StringType },
+                navArgument("info") { type = NavType.StringType },
+                navArgument("passengerId") { type = NavType.StringType }),
         ) { backStackEntry ->
+            val name = backStackEntry.arguments?.getString("name").orEmpty()
+            val info = backStackEntry.arguments?.getString("info").orEmpty()
             val passengerId = backStackEntry.arguments?.getString("passengerId").orEmpty()
-            CheckInScreen(passengerId) { flightId ->
+            CheckInScreen(name, info, passengerId) { flightId ->
                 navController.navigate("${Screen.BOARDING_PASS.label}/$flightId")
             }
         }

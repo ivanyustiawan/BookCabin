@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import model.PassengerDetails
-import model.Result
 import uiState.AppUiState
 import usecase.GetPassengerUseCase
 import javax.inject.Inject
@@ -29,7 +28,7 @@ class PassengerDetailsViewModel @Inject constructor(
     private var passengerDetails by mutableStateOf<PassengerDetails?>(null)
 
     private val _passengerUpdatesState =
-        MutableStateFlow<AppUiState<String>>(AppUiState.Idle)
+        MutableStateFlow<AppUiState<PassengerDetails>>(AppUiState.Idle)
     val passengerUpdatesState = _passengerUpdatesState.asStateFlow()
 
     private var isLoading = false
@@ -75,15 +74,14 @@ class PassengerDetailsViewModel @Inject constructor(
                         isLoading = false
                     }
                     .collect { results ->
-                        _passengerUpdatesState.value =
-                            AppUiState.Success(it.reservation.passengers.passenger[0].id)
+                        _passengerUpdatesState.value = AppUiState.Success(it)
                         isLoading = false
                     }
             }
         }
     }
 
-    fun setState(value: AppUiState<String>) {
+    fun setState(value: AppUiState<PassengerDetails>) {
         _passengerUpdatesState.value = value
     }
 
