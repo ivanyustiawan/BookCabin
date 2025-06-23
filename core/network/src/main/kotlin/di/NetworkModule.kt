@@ -1,6 +1,6 @@
 package di
 
-import com.example.bookcabin.BuildConfig
+import com.example.bookcabin.core.network.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

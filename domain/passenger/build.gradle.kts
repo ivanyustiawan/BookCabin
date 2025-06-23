@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = AppConfig.NAME_SPACE
+    namespace = "com.example.bookcabin.domain.passenger"
     compileSdk = AppConfig.COMPILE_SDK
 
     defaultConfig {

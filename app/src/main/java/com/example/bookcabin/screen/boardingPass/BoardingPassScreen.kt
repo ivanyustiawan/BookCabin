@@ -103,14 +103,18 @@ fun BoardingPassScreen(
 @Composable
 fun BoardingPassView(passengerBoardingPass: PassengerBoardingPass) {
 
-    val name = passengerBoardingPass.boardingPasses[0].boardingPass.personName.first + " " + passengerBoardingPass.boardingPasses[0].boardingPass.personName.last
-    val airlane = passengerBoardingPass.boardingPasses[0].boardingPass.flightDetail.airline + " " + passengerBoardingPass.boardingPasses[0].boardingPass.flightDetail.flightNumber
+    val name =
+        passengerBoardingPass.boardingPasses[0].boardingPass.personName.first + " " + passengerBoardingPass.boardingPasses[0].boardingPass.personName.last
+    val airlane =
+        passengerBoardingPass.boardingPasses[0].boardingPass.flightDetail.airline + " " + passengerBoardingPass.boardingPasses[0].boardingPass.flightDetail.flightNumber
     val fareInfo =
         passengerBoardingPass.boardingPasses[0].boardingPass.fareInfo.bookingClass + "" +
                 passengerBoardingPass.boardingPasses[0].boardingPass.group + "" + passengerBoardingPass.boardingPasses[0].boardingPass.zone
     val seat = passengerBoardingPass.boardingPasses[0].boardingPass.seat.value
-    val departureAirport = passengerBoardingPass.boardingPasses[0].boardingPass.flightDetail.departureAirport
-    val arrivalAirport = passengerBoardingPass.boardingPasses[0].boardingPass.flightDetail.arrivalAirport
+    val departureAirport =
+        passengerBoardingPass.boardingPasses[0].boardingPass.flightDetail.departureAirport
+    val arrivalAirport =
+        passengerBoardingPass.boardingPasses[0].boardingPass.flightDetail.arrivalAirport
     val barcode = passengerBoardingPass.boardingPasses[0].boardingPass.barCode
 
     Scaffold(

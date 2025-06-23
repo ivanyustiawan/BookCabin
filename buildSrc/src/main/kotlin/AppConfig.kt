@@ -1,5 +1,4 @@
 object AppConfig {
-    const val NAME_SPACE = "com.example.bookcabin"
     const val COMPILE_SDK = 35
     const val APPLICATION_ID = "com.example.bookcabin"
     const val MIN_SDK = 29

@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = AppConfig.NAME_SPACE
+    namespace = "com.example.bookcabin.core.network"
     compileSdk = AppConfig.COMPILE_SDK
 
     defaultConfig {
