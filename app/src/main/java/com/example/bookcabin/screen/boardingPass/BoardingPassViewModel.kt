@@ -10,12 +10,12 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import model.PassengerBoardingPass
 import uiState.AppUiState
-import usecase.GetPassengerUseCase
+import usecase.GetPassengerBoardingPassUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class BoardingPassViewModel @Inject constructor(
-    private val getPassengerUseCase: GetPassengerUseCase
+    private val getPassengerBoardingPassUseCase: GetPassengerBoardingPassUseCase
 ) : ViewModel() {
 
     private val _boardingPassInState =
@@ -29,7 +29,7 @@ class BoardingPassViewModel @Inject constructor(
         isLoading = true
 
         viewModelScope.launch {
-            getPassengerUseCase.getPassengerBoardingPass(flightId)
+            getPassengerBoardingPassUseCase(flightId)
                 .onStart {
                     _boardingPassInState.value = AppUiState.Loading
                 }

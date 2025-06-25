@@ -9,12 +9,12 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import uiState.AppUiState
-import usecase.GetPassengerUseCase
+import usecase.GetPassengerCheckInUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class CheckInViewModel @Inject constructor(
-    private val getPassengerUseCase: GetPassengerUseCase
+    private val getPassengerCheckInUseCase: GetPassengerCheckInUseCase
 ) : ViewModel() {
 
     private val _checkInState = MutableStateFlow<AppUiState<String>>(AppUiState.Idle)
@@ -27,7 +27,7 @@ class CheckInViewModel @Inject constructor(
         isLoading = true
 
         viewModelScope.launch {
-            getPassengerUseCase.getPassengerCheckIn(passengerIds)
+            getPassengerCheckInUseCase(passengerIds)
                 .onStart {
                     _checkInState.value = AppUiState.Loading
                 }
@@ -44,7 +44,7 @@ class CheckInViewModel @Inject constructor(
 
     }
 
-    fun setState(value: AppUiState<String>){
+    fun setState(value: AppUiState<String>) {
         _checkInState.value = value
     }
 

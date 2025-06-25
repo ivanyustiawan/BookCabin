@@ -13,12 +13,14 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import model.PassengerDetails
 import uiState.AppUiState
-import usecase.GetPassengerUseCase
+import usecase.GetPassengerDetailsUseCase
+import usecase.GetPassengerUpdateUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class PassengerDetailsViewModel @Inject constructor(
-    private val getPassengerUseCase: GetPassengerUseCase
+    private val getPassengerDetailsUseCase: GetPassengerDetailsUseCase,
+    private val getPassengerUpdateUseCase: GetPassengerUpdateUseCase,
 ) : ViewModel() {
 
     private val _passengerDetailsState =
@@ -38,7 +40,7 @@ class PassengerDetailsViewModel @Inject constructor(
         isLoading = true
 
         viewModelScope.launch {
-            getPassengerUseCase.getPassengerDetails(pnr, lastName)
+            getPassengerDetailsUseCase(pnr, lastName)
                 .onStart {
                     _passengerDetailsState.value = AppUiState.Loading
                 }
@@ -61,7 +63,7 @@ class PassengerDetailsViewModel @Inject constructor(
 
         passengerDetails?.let {
             viewModelScope.launch {
-                getPassengerUseCase.getPassengerUpdate(
+                getPassengerUpdateUseCase(
                     it.reservation.passengers.passenger[0].passengerDocument,
                     it.reservation.passengers.passenger[0].weightCategory,
                     it.reservation.passengers.passenger[0].id
