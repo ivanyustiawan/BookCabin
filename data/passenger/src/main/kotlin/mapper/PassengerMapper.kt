@@ -51,16 +51,17 @@ fun PassengerResponse?.toModel(): Passenger = Passenger(
     syntheticIdentifier = this?.syntheticIdentifier.orEmpty(),
     personName = this?.personName.toModel(),
     passengerSegments = this?.passengerSegments.toModel(),
-    passengerDocument = this?.passengerDocument?.map { it.toModel() }.orEmpty(),
+    passengerDocument = this?.passengerDocument?.map { it.toModel(this.personName) }.orEmpty(),
     emergencyContact = this?.emergencyContact?.map { it.toModel() }.orEmpty(),
     weightCategory = this?.weightCategory.orEmpty()
 )
 
-fun PersonNameResponse?.toModel(): PersonName = PersonName(
-    prefix = this?.prefix.orEmpty(),
-    first = this?.first.orEmpty(),
-    last = this?.last.orEmpty(),
-)
+fun PersonNameResponse?.toModel(personNameResponse: PersonNameResponse? = null): PersonName =
+    PersonName(
+        prefix = if (this?.prefix.isNullOrBlank()) personNameResponse?.prefix.orEmpty() else this.prefix,
+        first = this?.first.orEmpty(),
+        last = this?.last.orEmpty(),
+    )
 
 fun PassengerSegmentsResponse?.toModel(): PassengerSegments = PassengerSegments(
     passengerSegment = this?.passengerSegment?.map { it.toModel() }.orEmpty()
@@ -97,14 +98,15 @@ fun DisplayDataResponse?.toModel(): DisplayData = DisplayData(
     arrivalAirportName = this?.arrivalAirportName.orEmpty()
 )
 
-fun PassengerDocumentResponse?.toModel(): PassengerDocument = PassengerDocument(
-    document = this?.document.toModel()
-)
+fun PassengerDocumentResponse?.toModel(personNameResponse: PersonNameResponse? = null): PassengerDocument =
+    PassengerDocument(
+        document = this?.document.toModel(personNameResponse)
+    )
 
-fun DocumentResponse?.toModel(): Document = Document(
+fun DocumentResponse?.toModel(personNameResponse: PersonNameResponse? = null): Document = Document(
     id = this?.id.orEmpty(),
     number = this?.id.orEmpty(),
-    personName = this?.personName.toModel(),
+    personName = this?.personName.toModel(personNameResponse),
     nationality = this?.nationality.orEmpty(),
     dateOfBirth = this?.dateOfBirth.orEmpty(),
     issuingCountry = this?.issuingCountry.orEmpty(),

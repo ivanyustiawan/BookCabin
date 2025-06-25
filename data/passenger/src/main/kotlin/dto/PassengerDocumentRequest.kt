@@ -1,7 +1,7 @@
 package dto
 
-import model.Document
 import model.EmergencyContact
+import model.PassengerDocument
 
 data class PassengerUpdateRequest(
     val returnSession: Boolean,
@@ -9,12 +9,8 @@ data class PassengerUpdateRequest(
 )
 
 data class PassengerDocumentRequest(
-    val documents: List<DocumentsRequest>?,
+    val documents: List<PassengerDocument>?,
     val emergencyContacts: List<EmergencyContact>?,
     val weightCategory: String,
     val passengerId: String
-)
-
-data class DocumentsRequest(
-    val documentRequest: Document
 )

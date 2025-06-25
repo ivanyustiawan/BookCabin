@@ -17,6 +17,7 @@ import mapper.toModel
 import model.PassengerBoardingPass
 import model.PassengerCheckIn
 import model.PassengerDetails
+import model.PassengerDocument
 import model.Results
 import javax.inject.Inject
 
@@ -54,6 +55,7 @@ class PassengerRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getPassengerUpdate(
+        passengerDocumentList: List<PassengerDocument>,
         weightCategory: String,
         passengerId: String,
     ): Flow<Results> = flow {
@@ -62,7 +64,7 @@ class PassengerRepositoryImpl @Inject constructor(
             returnSession = false,
             passengerDetails = listOf(
                 PassengerDocumentRequest(
-                    documents = listOf(),
+                    documents = passengerDocumentList,
                     emergencyContacts = listOf(),
                     weightCategory = weightCategory,
                     passengerId = passengerId,

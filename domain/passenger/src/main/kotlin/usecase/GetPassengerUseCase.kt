@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import model.PassengerBoardingPass
 import model.PassengerCheckIn
 import model.PassengerDetails
+import model.PassengerDocument
 import model.Results
 import repository.PassengerRepository
 import javax.inject.Inject
@@ -14,10 +15,11 @@ class GetPassengerUseCase @Inject constructor(private val repository: PassengerR
         repository.getPassengerDetails(pnr, lastName)
 
     suspend fun getPassengerUpdate(
+        passengerDocumentList: List<PassengerDocument>,
         weightCategory: String,
         passengerId: String,
     ): Flow<Results> =
-        repository.getPassengerUpdate(weightCategory, passengerId)
+        repository.getPassengerUpdate(passengerDocumentList, weightCategory, passengerId)
 
     suspend fun getPassengerCheckIn(passengerIds: String): Flow<PassengerCheckIn> =
         repository.getPassengerCheckIn(passengerIds)

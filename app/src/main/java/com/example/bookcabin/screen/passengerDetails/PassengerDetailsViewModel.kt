@@ -62,6 +62,7 @@ class PassengerDetailsViewModel @Inject constructor(
         passengerDetails?.let {
             viewModelScope.launch {
                 getPassengerUseCase.getPassengerUpdate(
+                    it.reservation.passengers.passenger[0].passengerDocument,
                     it.reservation.passengers.passenger[0].weightCategory,
                     it.reservation.passengers.passenger[0].id
                 )
