@@ -24,19 +24,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.bookcabin.R
-import com.example.bookcabin.ui.theme.BookCabinTheme
+import dateHelper.formatIsoDate
+import model.PassengerDetails
 import uiState.AppUiState
 
 @Composable
 fun CheckInScreen(
-    name: String,
-    info: String,
-    passengerIds: String,
+    passengerDetails: PassengerDetails?,
     viewModel: CheckInViewModel = hiltViewModel(),
     onCheckSuccess: (String) -> Unit
 ) {
@@ -52,7 +50,9 @@ fun CheckInScreen(
         }
     }
 
-    CheckInView(viewModel, passengerIds, name, info)
+    passengerDetails?.let {
+        CheckInView(viewModel, passengerDetails)
+    }
 
     when (checkInState) {
         is AppUiState.Idle -> {}
@@ -87,14 +87,39 @@ fun CheckInScreen(
 }
 
 @Composable
-fun CheckInView(viewModel: CheckInViewModel, passengerIds: String, name: String, info: String) {
+fun CheckInView(
+    viewModel: CheckInViewModel,
+    passengerDetails: PassengerDetails
+) {
+    val airlane =
+        passengerDetails.reservation.passengers.passenger[0].passengerSegments.passengerSegment[0].passengerFlight[0].boardingPass.flightDetail.airline
+    val flightNumber =
+        passengerDetails.reservation.passengers.passenger[0].passengerSegments.passengerSegment[0].passengerFlight[0].boardingPass.flightDetail.flightNumber
+    val departureAirport =
+        passengerDetails.reservation.passengers.passenger[0].passengerSegments.passengerSegment[0].passengerFlight[0].boardingPass.displayData.departureAirportName
+    val arrivalAirport =
+        passengerDetails.reservation.passengers.passenger[0].passengerSegments.passengerSegment[0].passengerFlight[0].boardingPass.displayData.arrivalAirportName
+    val departureTime =
+        passengerDetails.reservation.passengers.passenger[0].passengerSegments.passengerSegment[0].passengerFlight[0].boardingPass.flightDetail.departureTime
+    val arrivalTime =
+        passengerDetails.reservation.passengers.passenger[0].passengerSegments.passengerSegment[0].passengerFlight[0].boardingPass.flightDetail.arrivalTime
+    val boardingTime =
+        passengerDetails.reservation.passengers.passenger[0].passengerSegments.passengerSegment[0].passengerFlight[0].boardingPass.flightDetail.boardingTime
+    val gate =
+        passengerDetails.reservation.passengers.passenger[0].passengerSegments.passengerSegment[0].passengerFlight[0].boardingPass.flightDetail.departureGate
+
+    val passengerId = passengerDetails.reservation.passengers.passenger[0].id
+    val name =
+        "${passengerDetails.reservation.passengers.passenger[0].personName.first} ${passengerDetails.reservation.passengers.passenger[0].personName.last}"
+    val info = "$airlane $flightNumber  $departureAirport to $arrivalAirport"
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.secondary,
         bottomBar = {
             Button(
                 onClick = {
-                    viewModel.getPassengerCheckIn(passengerIds)
+                    viewModel.getPassengerCheckIn(passengerId)
                 },
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier
@@ -135,14 +160,66 @@ fun CheckInView(viewModel: CheckInViewModel, passengerIds: String, name: String,
                 text = info,
                 style = MaterialTheme.typography.bodyLarge,
             )
+
+            Spacer(Modifier.height(32.dp))
+            Text(
+                text = stringResource(id = R.string.label_departure_time),
+                style = MaterialTheme.typography.labelLarge,
+            )
+            Spacer(Modifier.height(8.dp))
+            Text(
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 0.dp, top = 0.dp, bottom = 0.dp),
+                text = formatIsoDate(departureTime),
+                style = MaterialTheme.typography.bodyLarge,
+            )
+
+            Spacer(Modifier.height(24.dp))
+            Text(
+                text = stringResource(id = R.string.label_arrival_time),
+                style = MaterialTheme.typography.labelLarge,
+            )
+            Spacer(Modifier.height(8.dp))
+            Text(
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 0.dp, top = 0.dp, bottom = 0.dp),
+                text = formatIsoDate(arrivalTime),
+                style = MaterialTheme.typography.bodyLarge,
+            )
+
+            Spacer(Modifier.height(24.dp))
+            Text(
+                text = stringResource(id = R.string.label_boarding_time),
+                style = MaterialTheme.typography.labelLarge,
+            )
+            Spacer(Modifier.height(8.dp))
+            Text(
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 0.dp, top = 0.dp, bottom = 0.dp),
+                text = formatIsoDate(boardingTime),
+                style = MaterialTheme.typography.bodyLarge,
+            )
+
+            Spacer(Modifier.height(24.dp))
+            Text(
+                text = stringResource(id = R.string.label_gate),
+                style = MaterialTheme.typography.labelLarge,
+            )
+            Spacer(Modifier.height(8.dp))
+            Text(
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 0.dp, top = 0.dp, bottom = 0.dp),
+                text = gate,
+                style = MaterialTheme.typography.bodyLarge,
+            )
         }
     }
 }
 
-@Preview
-@Composable
-fun CheckInScreenPreview() {
-    BookCabinTheme {
-        CheckInScreen("", "", "") {}
-    }
-}
+//@Preview
+//@Composable
+//fun CheckInScreenPreview() {
+//    BookCabinTheme {
+//        CheckInScreen(null, onCheckSuccess = {} as (String) -> Unit)
+//    }
+//}

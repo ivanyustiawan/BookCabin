@@ -90,7 +90,11 @@ fun FlightDetailResponse?.toModel(): FlightDetail = FlightDetail(
     airline = this?.airline.orEmpty(),
     flightNumber = this?.flightNumber.orEmpty(),
     departureAirport = this?.departureAirport.orEmpty(),
-    arrivalAirport = this?.arrivalAirport.orEmpty()
+    arrivalAirport = this?.arrivalAirport.orEmpty(),
+    departureTime = this?.departureTime.orEmpty(),
+    arrivalTime = this?.arrivalTime.orEmpty(),
+    boardingTime = this?.boardingTime.orEmpty(),
+    departureGate = this?.departureGate.orEmpty()
 )
 
 fun DisplayDataResponse?.toModel(): DisplayData = DisplayData(

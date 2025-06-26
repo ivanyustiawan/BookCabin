@@ -10,6 +10,7 @@ import com.example.bookcabin.screen.boardingPass.BoardingPassScreen
 import com.example.bookcabin.screen.checkIn.CheckInScreen
 import com.example.bookcabin.screen.onlineCheckIn.OnlineCheckInScreen
 import com.example.bookcabin.screen.passengerDetails.PassengerDetailsScreen
+import model.PassengerDetails
 
 @Composable
 fun AppNavigation() {
@@ -29,22 +30,23 @@ fun AppNavigation() {
         ) { backStackEntry ->
             val pnr = backStackEntry.arguments?.getString("pnr").orEmpty()
             val lastName = backStackEntry.arguments?.getString("lastName").orEmpty()
-            PassengerDetailsScreen(pnr = pnr, lastName = lastName) { name, info, passengerId ->
-                navController.navigate("${Screen.CHECK_IN.label}/$name/$info/$passengerId")
+            PassengerDetailsScreen(
+                pnr = pnr,
+                lastName = lastName
+            ) { passengerDetails ->
+                navController.currentBackStackEntry?.savedStateHandle?.set(
+                    "passengerDetails",
+                    passengerDetails
+                )
+                navController.navigate(Screen.CHECK_IN.label)
             }
         }
 
-        composable(
-            "${Screen.CHECK_IN.label}/{name}/{info}/{passengerId}",
-            arguments = listOf(
-                navArgument("name") { type = NavType.StringType },
-                navArgument("info") { type = NavType.StringType },
-                navArgument("passengerId") { type = NavType.StringType }),
-        ) { backStackEntry ->
-            val name = backStackEntry.arguments?.getString("name").orEmpty()
-            val info = backStackEntry.arguments?.getString("info").orEmpty()
-            val passengerId = backStackEntry.arguments?.getString("passengerId").orEmpty()
-            CheckInScreen(name, info, passengerId) { flightId ->
+        composable(Screen.CHECK_IN.label) { backStackEntry ->
+            val passengerDetails = navController.previousBackStackEntry
+                ?.savedStateHandle
+                ?.get<PassengerDetails>("passengerDetails")
+            CheckInScreen(passengerDetails) { flightId ->
                 navController.navigate("${Screen.BOARDING_PASS.label}/$flightId")
             }
         }

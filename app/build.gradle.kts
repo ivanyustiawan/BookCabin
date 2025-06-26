@@ -77,6 +77,7 @@ dependencies {
     implementation(project(":domain:auth"))
     implementation(project(":domain:passenger"))
     implementation(project(":core:common"))
+    implementation(project(":core:helper"))
     implementation(project(":data:auth"))
     implementation(project(":data:passenger"))
 }

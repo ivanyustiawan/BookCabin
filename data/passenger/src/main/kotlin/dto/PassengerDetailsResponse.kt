@@ -59,6 +59,10 @@ data class FlightDetailResponse(
     @SerializedName("flightNumber") val flightNumber: String?,
     @SerializedName("departureAirport") val departureAirport: String?,
     @SerializedName("arrivalAirport") val arrivalAirport: String?,
+    @SerializedName("departureTime") val departureTime: String?,
+    @SerializedName("arrivalTime") val arrivalTime: String?,
+    @SerializedName("boardingTime") val boardingTime: String?,
+    @SerializedName("departureGate") val departureGate: String?,
 )
 
 data class DisplayDataResponse(

@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.bookcabin.core.common"
+    namespace = "com.example.bookcabin.core.helper"
     compileSdk = AppConfig.COMPILE_SDK
 
     defaultConfig {

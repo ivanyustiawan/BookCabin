@@ -23,6 +23,7 @@ rootProject.name = "BookCabin"
 include(":app")
 include(":core:network")
 include(":core:common")
+include(":core:helper")
 include(":domain:auth")
 include(":domain:passenger")
 include(":data:auth")
