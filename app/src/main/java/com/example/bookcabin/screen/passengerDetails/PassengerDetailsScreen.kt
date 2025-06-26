@@ -152,7 +152,7 @@ fun PassengerDetailsView(
     val isErrorFirstName = remember { mutableStateOf(false) }
     val lastNameField = remember { mutableStateOf("") }
     val isErrorLastName = remember { mutableStateOf(false) }
-    val genderList = Gender.values().toList()
+    val genderList = Gender.entries.toList()
     val expanded = remember { mutableStateOf(false) }
     val selectedField = remember { mutableStateOf(genderList[0]) }
 
