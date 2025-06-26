@@ -118,3 +118,8 @@ data class FareInfo(
 data class Seat(
     val value: String
 ) : Parcelable
+
+enum class Gender(val gender: String, val prefix: String){
+    MALE("MALE", "MR"),
+    FEMALE("FEMALE", "MRS"),
+}

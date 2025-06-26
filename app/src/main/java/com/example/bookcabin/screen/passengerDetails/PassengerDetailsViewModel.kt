@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import model.Gender
 import model.PassengerDetails
 import uiState.AppUiState
 import usecase.GetPassengerDetailsUseCase
@@ -57,13 +58,22 @@ class PassengerDetailsViewModel @Inject constructor(
         }
     }
 
-    fun getPassengerUpdate() {
+    fun getPassengerUpdate(
+        passportNumber: String,
+        firstName: String,
+        lastName: String,
+        gender: Gender,
+    ) {
         if (isLoading) return
         isLoading = true
 
         passengerDetails?.let {
             viewModelScope.launch {
                 getPassengerUpdateUseCase(
+                    passportNumber,
+                    firstName,
+                    lastName,
+                    gender,
                     it.reservation.passengers.passenger[0].passengerDocument,
                     it.reservation.passengers.passenger[0].weightCategory,
                     it.reservation.passengers.passenger[0].id

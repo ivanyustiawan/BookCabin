@@ -1,6 +1,5 @@
 package dto
 
-import model.EmergencyContact
 import model.PassengerDocument
 
 data class PassengerUpdateRequest(
@@ -9,8 +8,7 @@ data class PassengerUpdateRequest(
 )
 
 data class PassengerDocumentRequest(
-    val documents: List<PassengerDocument>?,
-    val emergencyContacts: List<EmergencyContact>?,
+    val documents: List<PassengerDocument>,
     val weightCategory: String,
     val passengerId: String
 )

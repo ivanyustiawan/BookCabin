@@ -10,6 +10,8 @@
     <string name="label_passport_information">Passport Information is required</string>
     <string name="label_enter_document">Please enter ite required document details below</string>
     <string name="label_passport_number">Passport Number</string>
+    <string name="label_first_name">First Name</string>
+    <string name="label_gender">Gender</string>
     <string name="button_save">Save</string>
 
     <string name="title_check_in">CHECK-IN</string>

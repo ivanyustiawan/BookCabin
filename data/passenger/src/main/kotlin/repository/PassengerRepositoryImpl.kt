@@ -14,6 +14,8 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import local.TokenManager
 import mapper.toModel
+import mapper.updatePassengerDocument
+import model.Gender
 import model.PassengerBoardingPass
 import model.PassengerCheckIn
 import model.PassengerDetails
@@ -55,6 +57,10 @@ class PassengerRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getPassengerUpdate(
+        passportNumber: String,
+        firstName: String,
+        lastName: String,
+        gender: Gender,
         passengerDocumentList: List<PassengerDocument>,
         weightCategory: String,
         passengerId: String,
@@ -64,8 +70,9 @@ class PassengerRepositoryImpl @Inject constructor(
             returnSession = false,
             passengerDetails = listOf(
                 PassengerDocumentRequest(
-                    documents = passengerDocumentList,
-                    emergencyContacts = listOf(),
+                    documents = passengerDocumentList.map {
+                        it.updatePassengerDocument(passportNumber, firstName, lastName, gender)
+                    },
                     weightCategory = weightCategory,
                     passengerId = passengerId,
                 )

@@ -1,6 +1,7 @@
 package repository
 
 import kotlinx.coroutines.flow.Flow
+import model.Gender
 import model.PassengerBoardingPass
 import model.PassengerCheckIn
 import model.PassengerDetails
@@ -10,6 +11,10 @@ import model.Results
 interface PassengerRepository {
     suspend fun getPassengerDetails(pnr: String, lastName: String): Flow<PassengerDetails>
     suspend fun getPassengerUpdate(
+        passportNumber: String,
+        firstName: String,
+        lastName: String,
+        gender: Gender,
         passengerDocumentList: List<PassengerDocument>,
         weightCategory: String,
         passengerId: String,

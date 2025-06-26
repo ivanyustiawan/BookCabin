@@ -22,6 +22,7 @@ import model.Document
 import model.EmergencyContact
 import model.FareInfo
 import model.FlightDetail
+import model.Gender
 import model.Passenger
 import model.PassengerDetails
 import model.PassengerDocument
@@ -134,3 +135,41 @@ fun FareInfoResponse?.toModel(): FareInfo = FareInfo(
 fun SeatResponse?.toModel(): Seat = Seat(
     value = this?.value.orEmpty()
 )
+
+fun PassengerDocument.updatePassengerDocument(
+    passportNumber: String,
+    firstName: String,
+    lastName: String,
+    gender: Gender,
+): PassengerDocument = PassengerDocument(
+    document = this.document.updateDocument(
+        passportNumber,
+        firstName,
+        lastName,
+        gender
+    )
+)
+
+fun Document.updateDocument(
+    passportNumber: String,
+    firstName: String,
+    lastName: String,
+    gender: Gender,
+): Document = Document(
+    id = this.id,
+    number = passportNumber,
+    personName = this.personName.updatePersonName(gender, firstName, lastName),
+    nationality = this.nationality,
+    dateOfBirth = this.dateOfBirth,
+    issuingCountry = this.issuingCountry,
+    expiryDate = this.expiryDate,
+    gender = gender.gender,
+    type = this.type,
+)
+
+fun PersonName.updatePersonName(gender: Gender, firstName: String, lastName: String): PersonName =
+    PersonName(
+        prefix = gender.prefix,
+        first = firstName,
+        last = lastName,
+    )
