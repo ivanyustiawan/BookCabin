@@ -15,10 +15,15 @@ interface PassengerRepository {
         firstName: String,
         lastName: String,
         gender: Gender,
+        contactName: String,
+        countryCode: String,
+        contactNumber: String,
+        relationship: String,
         passengerDocumentList: List<PassengerDocument>,
         weightCategory: String,
         passengerId: String,
     ): Flow<Results>
+
     suspend fun getPassengerCheckIn(passengerIds: String): Flow<PassengerCheckIn>
     suspend fun getPassengerBoardingPass(flightId: String): Flow<PassengerBoardingPass>
 }

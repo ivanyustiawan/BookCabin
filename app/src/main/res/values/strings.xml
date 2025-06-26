@@ -12,6 +12,11 @@
     <string name="label_passport_number">Passport Number</string>
     <string name="label_first_name">First Name</string>
     <string name="label_gender">Gender</string>
+    <string name="label_emergency_contact">Emergency Contact</string>
+    <string name="label_contact_name">Name</string>
+    <string name="label_contact_country">Country</string>
+    <string name="label_contact_number">Contact Number</string>
+    <string name="label_contact_relationship">Relationship</string>
     <string name="button_save">Save</string>
 
     <string name="title_check_in">CHECK-IN</string>

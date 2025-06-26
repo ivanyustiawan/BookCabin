@@ -63,6 +63,10 @@ class PassengerDetailsViewModel @Inject constructor(
         firstName: String,
         lastName: String,
         gender: Gender,
+        contactName: String,
+        countryCode: String,
+        contactNumber: String,
+        relationship: String,
     ) {
         if (isLoading) return
         isLoading = true
@@ -74,6 +78,10 @@ class PassengerDetailsViewModel @Inject constructor(
                     firstName,
                     lastName,
                     gender,
+                    contactName,
+                    countryCode,
+                    contactNumber,
+                    relationship,
                     it.reservation.passengers.passenger[0].passengerDocument,
                     it.reservation.passengers.passenger[0].weightCategory,
                     it.reservation.passengers.passenger[0].id

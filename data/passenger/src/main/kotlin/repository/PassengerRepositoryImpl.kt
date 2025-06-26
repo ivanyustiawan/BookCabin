@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.flow
 import local.TokenManager
 import mapper.toModel
 import mapper.updatePassengerDocument
+import model.EmergencyContact
 import model.Gender
 import model.PassengerBoardingPass
 import model.PassengerCheckIn
@@ -61,6 +62,10 @@ class PassengerRepositoryImpl @Inject constructor(
         firstName: String,
         lastName: String,
         gender: Gender,
+        contactName: String,
+        countryCode: String,
+        contactNumber: String,
+        relationship: String,
         passengerDocumentList: List<PassengerDocument>,
         weightCategory: String,
         passengerId: String,
@@ -73,6 +78,15 @@ class PassengerRepositoryImpl @Inject constructor(
                     documents = passengerDocumentList.map {
                         it.updatePassengerDocument(passportNumber, firstName, lastName, gender)
                     },
+                    emergencyContacts = listOf(
+                        EmergencyContact(
+                            id = "ec1",
+                            name = contactName,
+                            countryCode = countryCode,
+                            contactDetails = contactNumber,
+                            relationship = relationship,
+                        )
+                    ),
                     weightCategory = weightCategory,
                     passengerId = passengerId,
                 )

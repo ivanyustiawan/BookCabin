@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -41,6 +42,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
@@ -155,6 +157,15 @@ fun PassengerDetailsView(
     val genderList = Gender.entries.toList()
     val expanded = remember { mutableStateOf(false) }
     val selectedField = remember { mutableStateOf(genderList[0]) }
+    val contactNameField = remember { mutableStateOf("") }
+    val isErrorContactName = remember { mutableStateOf(false) }
+    val expandedCountry = remember { mutableStateOf(false) }
+    val listCountry = listOf<String>("IN", "US", "MY", "EN")
+    val selectedCountryField = remember { mutableStateOf(listCountry[0]) }
+    val contactNumberField = remember { mutableStateOf("") }
+    val isErrorContactNumber = remember { mutableStateOf(false) }
+    val relationshipField = remember { mutableStateOf("") }
+    val isErrorRelationship = remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -171,13 +182,24 @@ fun PassengerDetailsView(
                             && !isErrorLastName.value
                             && passportField.value.isNotEmpty()
                             && firstNameField.value.isNotEmpty()
-                            && lastNameField.value.isNotEmpty(),
+                            && lastNameField.value.isNotEmpty()
+                            && contactNameField.value.isNotEmpty()
+                            && !isErrorContactName.value
+                            && contactNumberField.value.isNotEmpty()
+                            && !isErrorContactNumber.value
+                            && relationshipField.value.isNotEmpty()
+                            && !isErrorRelationship.value,
                     onClick = {
                         viewModel.getPassengerUpdate(
                             passportField.value,
                             firstNameField.value,
                             lastNameField.value,
-                            selectedField.value)
+                            selectedField.value,
+                            contactNameField.value,
+                            selectedCountryField.value,
+                            contactNumberField.value,
+                            relationshipField.value,
+                        )
                     },
                     shape = RoundedCornerShape(8.dp),
                     modifier = Modifier
@@ -367,7 +389,7 @@ fun PassengerDetailsView(
             )
             AnimatedVisibility(visible = isErrorLastName.value) {
                 Text(
-                    "Passport Number must be letters and digits and 6 to 9 characters long",
+                    "Last name cannot be empty",
                     color = Color.Red
                 )
             }
@@ -418,6 +440,170 @@ fun PassengerDetailsView(
                         )
                     }
                 }
+            }
+
+            Spacer(Modifier.height(24.dp))
+            Text(
+                text = stringResource(id = R.string.label_emergency_contact),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.secondary
+            )
+
+            Spacer(Modifier.height(8.dp))
+            Text(
+                text = stringResource(id = R.string.label_contact_name),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.secondary,
+            )
+            Spacer(Modifier.height(8.dp))
+            TextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .border(width = 2.dp, color = Pink80, shape = RoundedCornerShape(8.dp)),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+                    errorIndicatorColor = Color.Transparent,
+                ),
+                textStyle = MaterialTheme.typography.bodyLarge,
+                value = contactNameField.value,
+                onValueChange = {
+                    contactNameField.value = it.uppercase()
+                    isErrorContactName.value = contactNameField.value.isEmpty()
+                },
+                singleLine = true,
+            )
+            AnimatedVisibility(visible = isErrorContactName.value) {
+                Text(
+                    "Contact name cannot be empty",
+                    color = Color.Red
+                )
+            }
+
+            Spacer(Modifier.height(8.dp))
+            Text(
+                text = stringResource(id = R.string.label_contact_country),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.secondary,
+            )
+            Spacer(Modifier.height(8.dp))
+            ExposedDropdownMenuBox(
+                expanded = expandedCountry.value,
+                onExpandedChange = { expandedCountry.value = !expandedCountry.value }
+            ) {
+                TextField(
+                    modifier = Modifier
+                        .menuAnchor()
+                        .fillMaxWidth()
+                        .height(56.dp)
+                        .border(width = 2.dp, color = Pink80, shape = RoundedCornerShape(8.dp)),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
+                        errorIndicatorColor = Color.Transparent,
+                    ),
+                    textStyle = MaterialTheme.typography.bodyLarge,
+                    value = selectedCountryField.value,
+                    onValueChange = {},
+                    readOnly = true,
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedCountry.value) },
+                )
+
+                ExposedDropdownMenu(
+                    expanded = expandedCountry.value,
+                    onDismissRequest = { expandedCountry.value = false }
+                ) {
+                    listCountry.forEach { item ->
+                        DropdownMenuItem(
+                            text = { Text(item) },
+                            onClick = {
+                                selectedCountryField.value = item
+                                expandedCountry.value = false
+                            }
+                        )
+                    }
+                }
+            }
+
+            Spacer(Modifier.height(8.dp))
+            Text(
+                text = stringResource(id = R.string.label_contact_number),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.secondary,
+            )
+            Spacer(Modifier.height(8.dp))
+            val regexNumber = Regex("^[0-9]{9,13}$")
+            TextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .border(width = 2.dp, color = Pink80, shape = RoundedCornerShape(8.dp)),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+                    errorIndicatorColor = Color.Transparent,
+                ),
+                textStyle = MaterialTheme.typography.bodyLarge,
+                value = contactNumberField.value,
+                onValueChange = {
+                    if (it.length <= 13) contactNumberField.value = it
+                    isErrorContactNumber.value = !regexNumber.matches(contactNumberField.value)
+                },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number
+                ),
+            )
+            AnimatedVisibility(visible = isErrorContactNumber.value) {
+                Text(
+                    "Contact number cannot be empty and must be 9 to 13 digits long",
+                    color = Color.Red
+                )
+            }
+
+            Spacer(Modifier.height(8.dp))
+            Text(
+                text = stringResource(id = R.string.label_contact_relationship),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.secondary,
+            )
+            Spacer(Modifier.height(8.dp))
+            TextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .border(width = 2.dp, color = Pink80, shape = RoundedCornerShape(8.dp)),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+                    errorIndicatorColor = Color.Transparent,
+                ),
+                textStyle = MaterialTheme.typography.bodyLarge,
+                value = relationshipField.value,
+                onValueChange = {
+                    relationshipField.value = it
+                    isErrorRelationship.value = relationshipField.value.isEmpty()
+                },
+                singleLine = true,
+            )
+            AnimatedVisibility(visible = isErrorRelationship.value) {
+                Text(
+                    "Contact relationship cannot be empty",
+                    color = Color.Red
+                )
             }
 
         }
